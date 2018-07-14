@@ -1,19 +1,44 @@
 package edu.ucsb.boning.entities;
 
-import edu.ucsb.boning.Utilities.Point;
+import edu.ucsb.boning.game.Parameters;
+import edu.ucsb.boning.utilities.Point;
 import edu.ucsb.boning.game.Game;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Sheep extends Animal {
 
     public static final int FILL_COLOR = 0x5AD2CC;
 
-    private Animal.State state = State.NORMAL;
+    int sightRrange = 40;
 
     public Sheep() {
         super();
+    }
+
+    @Override
+    protected void setNormalState() {
+
+    }
+
+    @Override
+    protected void setMateState() {
+
+    }
+
+    @Override
+    protected void setHungerState() {
+
+    }
+
+    @Override
+    protected void setDangerState() {
+
+    }
+
+    @Override
+    protected void setDeadState() {
+        state = State.DEAD;
     }
 
     @Override
@@ -21,7 +46,7 @@ public class Sheep extends Animal {
         super.update(dt);
         if (state == State.NORMAL) {
 
-            if (Point.getDistance(position, destination) < Game.COLLISION_RANGE) {
+            if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
                 destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
                 setDirection();
             }

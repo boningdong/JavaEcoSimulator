@@ -1,6 +1,7 @@
 package edu.ucsb.boning.game;
 
-import edu.ucsb.boning.Utilities.Point;
+import edu.ucsb.boning.entities.Sheep;
+import edu.ucsb.boning.utilities.Point;
 import edu.ucsb.boning.entities.Entity;
 
 import java.awt.*;
@@ -116,6 +117,7 @@ public class RegionManager {
     }
 
     private int getRegionIndex(Point p) {
+        p = Point.constrainInFrame(p);
         return p.getX()/xLength + p.getY()/yLength * xRegionNumbers;
     }
 
@@ -124,9 +126,10 @@ public class RegionManager {
     }
 
     public static void main(String[] args) {
-        Hashtable<String, Integer> t = new Hashtable<>();
-        t.put("ID10", 20);
-        t.put("ID10", 30);
-        System.out.println(t.get("ID10"));
+        Hashtable<Entity, Integer> t = new Hashtable<>();
+        Entity e = new Sheep();
+        Sheep s = (Sheep) e;
+        t.put(e, 20);
+        System.out.println();
     }
 }

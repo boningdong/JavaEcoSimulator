@@ -1,4 +1,4 @@
-package edu.ucsb.boning.Utilities;
+package edu.ucsb.boning.utilities;
 
 public class FrameTimer {
     private double dt;

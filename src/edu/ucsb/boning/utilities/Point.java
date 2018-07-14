@@ -1,5 +1,7 @@
-package edu.ucsb.boning.Utilities;
+package edu.ucsb.boning.utilities;
 
+
+import edu.ucsb.boning.game.Game;
 
 import java.util.Random;
 
@@ -29,6 +31,16 @@ public class Point {
         double x = new Random().nextInt(xRange);
         double y = new Random().nextInt(yRange);
         return new Point(x, y);
+    }
+
+    public static Point constrainInFrame(Point p) {
+        int x = p.getX();
+        int y = p.getY();
+        x = x > Game.WIDTH ? Game.WIDTH - 1 : x;
+        x = x < 0 ? 0 : x;
+        y = y >= Game.HEIGHT ? Game.HEIGHT - 1 : y;
+        y = y < 0 ? 0 : y;
+        return  new Point(x, y);
     }
 
     public static double getDistance(Point p1, Point p2) {

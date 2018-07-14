@@ -1,26 +1,28 @@
 package edu.ucsb.boning.game;
 
-import edu.ucsb.boning.Utilities.FrameTimer;
+import edu.ucsb.boning.entities.Entity;
+import edu.ucsb.boning.entities.Sheep;
+import edu.ucsb.boning.entities.Wolf;
+import edu.ucsb.boning.utilities.FrameTimer;
 import edu.ucsb.boning.display.Gui;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 public class Game implements Runnable{
 
-    // Game Settings
+    // Game Parameters
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     public static final double FPS = 120.0;
-    public static final double COLLISION_RANGE = 20;
 
     private Gui gui = new Gui();
 
     private Thread gameThread = new Thread(this);
     private FrameTimer fpsTimer = new FrameTimer(1/FPS * 1000);
 
-    private World world = new World();
+    private World world = World.getInstance();
 
     Game() {
         gameThread.start();
@@ -49,7 +51,7 @@ public class Game implements Runnable{
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.clearRect(0, 0, WIDTH, HEIGHT);
         world.render(g);
-        // RegionManager.getInstance().render(g);
+        //RegionManager.getInstance().render(g);
         buffer.show();
         g.dispose();
     }
