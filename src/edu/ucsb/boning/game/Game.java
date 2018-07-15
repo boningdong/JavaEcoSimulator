@@ -3,6 +3,7 @@ package edu.ucsb.boning.game;
 import edu.ucsb.boning.entities.Entity;
 import edu.ucsb.boning.entities.Sheep;
 import edu.ucsb.boning.entities.Wolf;
+import edu.ucsb.boning.plotter.Plotter;
 import edu.ucsb.boning.utilities.FrameTimer;
 import edu.ucsb.boning.display.Gui;
 
@@ -18,6 +19,7 @@ public class Game implements Runnable{
     public static final double FPS = 120.0;
 
     private Gui gui = new Gui();
+    private Plotter plotter = Plotter.getInstance();
 
     private Thread gameThread = new Thread(this);
     private FrameTimer fpsTimer = new FrameTimer(1/FPS * 1000);
@@ -39,9 +41,15 @@ public class Game implements Runnable{
 
     private void update() {
         world.update(fpsTimer.getDtSeconds());
+        plotter.log(fpsTimer.getDtSeconds(), world.getSheepNumbers(), world.getWolvesNumbers());
     }
 
     private void render() {
+        renderGame();
+        //renderData();
+    }
+
+    private void renderGame() {
         BufferStrategy buffer = gui.getCanvas().getBufferStrategy();
         if (buffer == null) {
             gui.getCanvas().createBufferStrategy(3);
@@ -50,8 +58,21 @@ public class Game implements Runnable{
         Graphics2D g = (Graphics2D) buffer.getDrawGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.clearRect(0, 0, WIDTH, HEIGHT);
+        g.setFont(new Font("Arial", Font.BOLD, 8));
         world.render(g);
         RegionManager.getInstance().render(g);
+        buffer.show();
+        g.dispose();
+    }
+
+    private void renderData() {
+        BufferStrategy buffer = gui.getPlotCanvas().getBufferStrategy();
+        if (buffer == null){
+            gui.getPlotCanvas().createBufferStrategy(3);
+            return;
+        }
+        Graphics2D g = (Graphics2D) buffer.getDrawGraphics();
+        plotter.render(g);
         buffer.show();
         g.dispose();
     }

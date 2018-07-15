@@ -21,10 +21,10 @@ public class World {
     private ArrayList<Wolf> wolves = new ArrayList<>();
 
     private World() {
-        for(int i = 0; i < 150; i++) {
+        for(int i = 0; i < 200; i++) {
             sheep.add(new Sheep());
         }
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 30; i++){
             wolves.add(new Wolf());
         }
     }
@@ -76,6 +76,14 @@ public class World {
         else if (e instanceof Wolf)
             wolves.remove(e);
         RegionManager.getInstance().unregister(e);
+    }
+
+    public int getSheepNumbers() {
+        return sheep.size();
+    }
+
+    public int getWolvesNumbers() {
+        return wolves.size();
     }
 
     public static World getInstance() {

@@ -43,6 +43,14 @@ public class Point {
         return  new Point(x, y);
     }
 
+    public static boolean isOutOfBoundary(Point p, int x0, int y0, int x1, int y1) {
+        if (p.getX() < x0 || p.getX() >= x1)
+            return true;
+        if (p.getY() < y0 || p.getY() >= y1)
+            return true;
+        return false;
+    }
+
     public static double getDistance(Point p1, Point p2) {
         double dx2 = Math.pow(p1.x - p2.x, 2);
         double dy2 = Math.pow(p1.y - p2.y, 2);

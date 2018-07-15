@@ -34,7 +34,6 @@ public class Wolf extends Animal {
     public void update(double dt) {
         super.update(dt);
         if(state == State.NORMAL){
-            System.out.println("NORMAL");
             if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
                 destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
             }
@@ -48,9 +47,7 @@ public class Wolf extends Animal {
                 setState(State.MATE);
 
         }
-
         else if (state == State.HUNGER) {
-            System.out.println("HUNGER");
             // Hunger Behavior
             if (huntTarget != null && huntTarget.getState() == State.DEAD)
                 huntTarget = null;

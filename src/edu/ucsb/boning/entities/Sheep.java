@@ -119,7 +119,10 @@ public class Sheep extends Animal {
 
         if (food <= 0 || age >= Parameters.MAX_AGE_SHEEP)
             setState(State.DEAD);
-
+        if (Point.isOutOfBoundary(position, 0, 0, Game.WIDTH, Game.HEIGHT)) {
+            resetPosition();
+            setState(State.NORMAL);
+        }
         eat(dt);
 
     }
@@ -135,8 +138,7 @@ public class Sheep extends Animal {
         g.fillRoundRect(position.getX()-SIZE/2, position.getY()-SIZE/2, SIZE, SIZE, SIZE/2, SIZE/2);
 
         if (debugRender) {
-            g.setColor(new Color(0x7A0C28));
-            g.setFont(Gui.getDebugFont());
+            g.setColor(new Color(0x007188));
             g.drawString("food: " + (int)food, position.getX() - 5, getPosition().getY() - 7);
             g.drawString("age: " + (int)age, position.getX() - 5, getPosition().getY() - 16);
         }
@@ -185,6 +187,16 @@ public class Sheep extends Animal {
         sheepNum = (int) Parameters.constrainParametersInRange((double)sheepNum - Parameters.FOOD_SHORTAGE_TH_SHEEP, 0, Integer.MAX_VALUE);
         food += Parameters.FOOD_EAT_RATE_SHEEP * Math.exp(-sheepNum * Parameters.FOOD_SHORTAGE_EXP_SHEEP) * dt;
         food = Parameters.constrainParametersInRange(food, Integer.MIN_VALUE, Parameters.MAX_VALUE);
+    }
+
+    private void resetPosition() {
+        double x = position.getX();
+        x = x >= Game.WIDTH ? x - Game.WIDTH : x;
+        x = x < 0 ? x + Game.WIDTH : x;
+        double y = position.getY();
+        y = y >= Game.HEIGHT ? y - Game.HEIGHT : y;
+        y = y < 0 ? y + Game.HEIGHT : y;
+        position = new Point(x, y);
     }
 
 
