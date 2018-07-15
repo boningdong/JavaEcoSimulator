@@ -1,5 +1,6 @@
 package edu.ucsb.boning.entities;
 
+import edu.ucsb.boning.game.Parameters;
 import edu.ucsb.boning.utilities.Point;
 import edu.ucsb.boning.game.Game;
 import edu.ucsb.boning.game.RegionManager;
@@ -30,6 +31,12 @@ public abstract class Animal extends Entity {
     public Animal() {
         setDirection();
         regionManager.register(this);
+    }
+
+    void updateBasicProperties(double dAge, double dFood, double dSex) {
+        age += dAge;
+        food = Parameters.constrainParametersInRange(food + dFood, 0, Parameters.MAX_VALUE);
+        sex = Parameters.constrainParametersInRange(sex + dSex, 0, Parameters.MAX_VALUE);
     }
 
     void setDirection() {

@@ -36,7 +36,7 @@ public class Point {
     public static Point constrainInFrame(Point p) {
         int x = p.getX();
         int y = p.getY();
-        x = x > Game.WIDTH ? Game.WIDTH - 1 : x;
+        x = x >= Game.WIDTH ? Game.WIDTH - 1 : x;
         x = x < 0 ? 0 : x;
         y = y >= Game.HEIGHT ? Game.HEIGHT - 1 : y;
         y = y < 0 ? 0 : y;

@@ -12,6 +12,7 @@ public class RegionManager {
     private static RegionManager regionManager = new RegionManager();
     private static final int xRegionNumbers = 20;
     private static final int yRegionNumbers = 15;
+    private static boolean debugRender = false;
 
     private int xLength = Game.WIDTH / xRegionNumbers;
     private int yLength = Game.HEIGHT / yRegionNumbers;
@@ -94,25 +95,27 @@ public class RegionManager {
     }
 
     public void render(Graphics2D g) {
-        g.setColor(new Color(0x614189));
-        for(int x = 1; x < xRegionNumbers; x++) {
-            g.drawLine(xLength * x, 0, xLength * x, yLength * yRegionNumbers);
-        }
-        for(int y = 1; y < yRegionNumbers; y++) {
-            g.drawLine(0, yLength * y, xLength * xRegionNumbers, yLength * y);
-        }
+        if (debugRender) {
+            g.setColor(new Color(0x34000A));
+            for (int x = 1; x < xRegionNumbers; x++) {
+                g.drawLine(xLength * x, 0, xLength * x, yLength * yRegionNumbers);
+            }
+            for (int y = 1; y < yRegionNumbers; y++) {
+                g.drawLine(0, yLength * y, xLength * xRegionNumbers, yLength * y);
+            }
 
-        for(int x = 0; x < xRegionNumbers; x++) {
-            for (int y = 0; y < yRegionNumbers; y++) {
-                int xx = x * xLength + xLength / 2;
-                int yy = y * yLength + yLength / 2;
-                ArrayList<Entity> region = getRegion(new Point(xx, yy));
-                g.drawString(Integer.toString(region.size()), xx, yy);
+            for (int x = 0; x < xRegionNumbers; x++) {
+                for (int y = 0; y < yRegionNumbers; y++) {
+                    int xx = x * xLength + xLength / 2;
+                    int yy = y * yLength + yLength / 2;
+                    ArrayList<Entity> region = getRegion(new Point(xx, yy));
+                    g.drawString(Integer.toString(region.size()), xx, yy);
+                }
             }
         }
     }
 
-    private ArrayList<Entity> getRegion(Point p) {
+    public ArrayList<Entity> getRegion(Point p) {
         return regions[getRegionIndex(p)];
     }
 

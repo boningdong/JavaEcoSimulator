@@ -34,4 +34,8 @@ public class Gui {
     public void setStartButtonAction(ActionListener handler) {
         startButton.addActionListener(handler);
     }
+
+    static public Font getDebugFont() {
+        return new Font("Arial", Font.PLAIN, 8);
+    }
 }

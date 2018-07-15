@@ -51,7 +51,7 @@ public class Game implements Runnable{
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.clearRect(0, 0, WIDTH, HEIGHT);
         world.render(g);
-        //RegionManager.getInstance().render(g);
+        RegionManager.getInstance().render(g);
         buffer.show();
         g.dispose();
     }
