@@ -33,20 +33,16 @@ public class Wolf extends Animal {
     @Override
     public void update(double dt) {
         super.update(dt);
+        // Normal State
         if(state == State.NORMAL){
-            if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
-                destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
-            }
-            setDirection();
-            position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
-            updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_WOLF * dt, Parameters.SEX_INCREASE_RATE_WOLF * dt);
+            normalWalkAround(dt);
             // State changing
             if (food < Parameters.FOOD_THRSHOLD)
                 setState(State.HUNGER);
             else if (food > Parameters.FOOD_THRSHOLD && sex > Parameters.SEX_THRESHOLD)
                 setState(State.MATE);
-
         }
+        // Hunger State
         else if (state == State.HUNGER) {
             // Hunger Behavior
             if (huntTarget != null && huntTarget.getState() == State.DEAD)
@@ -60,14 +56,8 @@ public class Wolf extends Animal {
                         break;
                     }
                 }
-                if (huntTarget == null) {
-                    if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
-                        destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
-                    }
-                    setDirection();
-                    position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
-                    updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_WOLF * dt, Parameters.SEX_INCREASE_RATE_WOLF * dt);
-                }
+                if (huntTarget == null)
+                    normalWalkAround(dt);
             } else {
                 setDirection(huntTarget.getPosition());
                 position.translate(Parameters.BOOST_FACTOR_WOLF * speed * Math.cos(rad) * dt, Parameters.BOOST_FACTOR_WOLF * speed * Math.sin(rad) * dt);
@@ -83,7 +73,7 @@ public class Wolf extends Animal {
                 setState(State.MATE);
 
         }
-
+        // Mate State
         else if (state == State.MATE) {
             if (mateTarget != null && ((mateTarget.getState() == State.DEAD) || (Point.getDistance(position, mateTarget.position) > sightRrange)))
                 mateTarget = null;
@@ -95,14 +85,8 @@ public class Wolf extends Animal {
                         break;
                     }
                 }
-                if (mateTarget == null) {
-                    if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
-                        destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
-                    }
-                    setDirection();
-                    position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
-                    updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_WOLF * dt, Parameters.SEX_INCREASE_RATE_WOLF * dt);
-                }
+                if (mateTarget == null)
+                    normalWalkAround(dt);
             } else {
                 setDirection(mateTarget.position);
                 position.translate(Parameters.BOOST_FACTOR_WOLF * speed * Math.cos(rad) * dt, Parameters.BOOST_FACTOR_WOLF * speed * Math.sin(rad) * dt);
@@ -135,6 +119,15 @@ public class Wolf extends Animal {
             g.drawString("food:" + Integer.toString((int) food), position.getX() - 3, position.getY() - 7);
             g.drawString("age:" + Integer.toString((int) age), position.getX() - 3, position.getY() - 16);
         }
+    }
+
+    private void normalWalkAround(double dt) {
+        if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
+            destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
+        }
+        setDirection();
+        position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
+        updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_WOLF * dt, Parameters.SEX_INCREASE_RATE_WOLF * dt);
     }
 
     private void hunt() {
