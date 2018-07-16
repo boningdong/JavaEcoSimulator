@@ -32,26 +32,20 @@ public class Sheep extends Animal {
     @Override
     public void update(double dt) {
         super.update(dt);
+        // Normal State
         if (state == State.NORMAL) {
-            if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
-                destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
-            }
-            setDirection();
-            position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
-            updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_SHEEP * dt, +Parameters.SEX_INCREASE_RATE_SHEEP * dt);
-
+            normalWalkAround(dt);
+            // Change state:
             if (dangerSource == null)
                 dangerSource = alertDangerSource();
-
-            // Change state:
             if (dangerSource != null)
                 setState(State.DANGER);
-
             else if (sex > Parameters.SEX_THRESHOLD) {
                 setState(State.MATE);
             }
-
-        } else if (state == State.MATE ) {
+        }
+        // Mate State
+        else if (state == State.MATE ) {
             if (mateTarget != null && ((mateTarget.getState() == State.DEAD) || (Point.getDistance(position, mateTarget.position) > sightRrange)))
                 mateTarget = null;
             if (mateTarget == null) {
@@ -62,15 +56,10 @@ public class Sheep extends Animal {
                         break;
                     }
                 }
-                if (mateTarget == null) {
-                    if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
-                        destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
-                    }
-                    setDirection();
-                    position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
-                    updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_SHEEP * dt, +Parameters.SEX_INCREASE_RATE_SHEEP * dt);
-                }
-            } else {
+                if (mateTarget == null)
+                    normalWalkAround(dt);
+            }
+            else {
                 //if (mateTarget != null)
                 setDirection(mateTarget.position);
                 position.translate(speed * Parameters.BOOST_FACTOR_SHEEP * Math.cos(rad) * dt, speed * Parameters.BOOST_FACTOR_SHEEP * Math.sin(rad) * dt);
@@ -88,22 +77,18 @@ public class Sheep extends Animal {
             else if (sex < Parameters.SEX_THRESHOLD)
                 setState(State.NORMAL);
 
-        } else if (state == State.DANGER) {
+        }
+        // Danger State
+        else if (state == State.DANGER) {
             if (dangerSource != null && dangerSource.getState() == State.DEAD)
                 dangerSource = null;
-            if (dangerSource != null) {
+            if (dangerSource == null)
+                normalWalkAround(dt);
+            else {
                 setDirection(dangerSource.position);
                 rad += Math.PI;
                 position.translate(speed * Parameters.BOOST_FACTOR_SHEEP * Math.cos(rad) * dt, speed * Parameters.BOOST_FACTOR_SHEEP * Math.sin(rad) * dt);
                 updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_SHEEP * Parameters.FOOD_DROP_BOOST_FACTOR * dt, +Parameters.SEX_INCREASE_RATE_SHEEP * dt);
-            }
-            else {
-                if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
-                    destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
-                }
-                setDirection();
-                position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
-                updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_SHEEP * dt, +Parameters.SEX_INCREASE_RATE_SHEEP * dt);
             }
             // Change State
             if (dangerSource != null && Point.getDistance(dangerSource.position, position) < sightRrange) {
@@ -124,7 +109,6 @@ public class Sheep extends Animal {
             setState(State.NORMAL);
         }
         eat(dt);
-
     }
 
     @Override
@@ -167,6 +151,16 @@ public class Sheep extends Animal {
             }
         }
         return null;
+    }
+
+    private void normalWalkAround(double dt) {
+        //From normal
+        if (Point.getDistance(position, destination) < Parameters.COLLISION_RANGE) {
+            destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
+        }
+        setDirection();
+        position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
+        updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_SHEEP * dt, +Parameters.SEX_INCREASE_RATE_SHEEP * dt);
     }
 
     private void mate() {
