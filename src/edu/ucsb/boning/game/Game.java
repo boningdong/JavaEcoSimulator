@@ -16,18 +16,19 @@ public class Game implements Runnable{
     // Game Parameters
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
-    public static final double FPS = 120.0;
+    public static final double FPS = 60.0;
 
     private Gui gui = new Gui();
-    private Plotter plotter = Plotter.getInstance();
 
     private Thread gameThread = new Thread(this);
+    private Thread plotThread = new Thread(Plotter.getInstance());
     private FrameTimer fpsTimer = new FrameTimer(1/FPS * 1000);
 
     private World world = World.getInstance();
 
     Game() {
         gameThread.start();
+        plotThread.start();
     }
 
     @Override
@@ -41,12 +42,11 @@ public class Game implements Runnable{
 
     private void update() {
         world.update(fpsTimer.getDtSeconds());
-        plotter.log(fpsTimer.getDtSeconds(), world.getSheepNumbers(), world.getWolvesNumbers());
+        Plotter.getInstance().log(fpsTimer.getDtSeconds(), world.getSheepNumbers(), world.getWolvesNumbers());
     }
 
     private void render() {
         renderGame();
-        //renderData();
     }
 
     private void renderGame() {
@@ -61,18 +61,6 @@ public class Game implements Runnable{
         g.setFont(new Font("Arial", Font.BOLD, 8));
         world.render(g);
         RegionManager.getInstance().render(g);
-        buffer.show();
-        g.dispose();
-    }
-
-    private void renderData() {
-        BufferStrategy buffer = gui.getPlotCanvas().getBufferStrategy();
-        if (buffer == null){
-            gui.getPlotCanvas().createBufferStrategy(3);
-            return;
-        }
-        Graphics2D g = (Graphics2D) buffer.getDrawGraphics();
-        plotter.render(g);
         buffer.show();
         g.dispose();
     }

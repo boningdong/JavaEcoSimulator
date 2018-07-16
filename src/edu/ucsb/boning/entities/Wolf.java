@@ -14,9 +14,9 @@ public class Wolf extends Animal {
 
     public static final int FILL_COLOR = 0xD44B4C;
 
-    private boolean debugRender = true;
+    private boolean debugRender = false;
     private double speed = Parameters.INIT_SPEED_WOLF;
-    private int sightRrange = 60;
+    private int sightRrange = 50;
     private Sheep huntTarget = null;
     private Wolf mateTarget = null;
     private Wolf wolfBaby = null;
@@ -124,11 +124,11 @@ public class Wolf extends Animal {
     @Override
     public void render(Graphics g) {
         if (state == State.NORMAL)
-            g.setColor(new Color(FILL_COLOR));
+            g.setColor(new Color(0xE25245));
         else if (state == State.HUNGER)
-            g.setColor(new Color(0xF20008));
+            g.setColor(new Color(0xF2683F));
         else if (state == State.MATE)
-            g.setColor(new Color(0xD60096));
+            g.setColor(new Color(0xD65F8A));
         g.fillRoundRect(position.getX()-SIZE/2, position.getY()-SIZE/2, SIZE, SIZE, SIZE/2, SIZE/2);
 
         if(debugRender) {

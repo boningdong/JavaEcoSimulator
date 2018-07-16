@@ -1,24 +1,59 @@
 package edu.ucsb.boning.plotter;
 
+import edu.ucsb.boning.display.Gui;
 import edu.ucsb.boning.utilities.LogData;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-public class Plotter {
-    public final static int WIDTH = 1300;
-    public final static int HEIGHT = 600;
+public class Plotter implements Runnable{
+    public final static int WIDTH = 480;
+    public final static int HEIGHT = 300;
     public static Plotter plotter;
 
+
     private double time = 0;
+
+
     private int preferredTimeStampsNum = 5000;
-    private double dx = WIDTH / preferredTimeStampsNum;
     private ArrayList<LogData> timeStamps = new ArrayList<>();
     private int sheepMaxNumber = 0;
     private int wolfMaxNumber = 0;
 
+    //GUI
+    private JFrame frame = new JFrame();
+    private Canvas canvas = new Canvas();
+
     private Plotter(){
-        timeStamps.add(new LogData(0, 0, 0));
+        canvas.setSize(new Dimension(WIDTH, HEIGHT));
+        canvas.setBackground(Gui.GUI_BGCOLOR);
+        frame.setTitle("Game data plot");
+        frame.add(canvas);
+        frame.pack();
+        frame.setVisible(false);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
+    }
+
+    @Override
+    public void run() {
+        while(true) {
+            render();
+        }
+    }
+
+    public void render() {
+        BufferStrategy buffer = canvas.getBufferStrategy();
+        if (buffer == null) {
+            canvas.createBufferStrategy(3);
+            return;
+        }
+        Graphics2D g = (Graphics2D) buffer.getDrawGraphics();
+        renderData(g);
+        buffer.show();
+        g.dispose();
     }
 
     public void log(double dt, int sheepNum, int wolvesNum) {
@@ -31,17 +66,26 @@ public class Plotter {
         wolfMaxNumber =  wolvesNum > wolfMaxNumber ? wolvesNum : wolfMaxNumber;
     }
 
-    public void render(Graphics2D g) {
+    public void renderData(Graphics2D g) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.clearRect(0, 0, WIDTH, HEIGHT);
-        for (int i = 0; i < timeStamps.size() - 1; i++) {
-            plotSheep(i, g);
-            plotWolves(i, g);
+        double dx = (double)WIDTH / timeStamps.size();
+        for (int i = 0; i < timeStamps.size() - 2; i++) {
+            plotSheep(i, g, dx);
+            plotWolves(i, g, dx);
         }
     }
 
-    private void plotSheep(int i, Graphics2D g) {
-        g.setColor(new Color(0x3B98A5));
+    public void openPlotter() {
+        if (!frame.isVisible()) {
+            frame.setVisible(true);
+        } else {
+            frame.setVisible(false);
+        }
+    }
+
+    private void plotSheep(int i, Graphics2D g, double dx) {
+        g.setColor(new Color(0x52CFE0));
         g.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         int x0 = (int)(i * dx);
         int y0 = getHeightInScale(timeStamps.get(i).getSheepNumber(), sheepMaxNumber);
@@ -50,8 +94,8 @@ public class Plotter {
         g.drawLine(x0, y0, x1, y1);
     }
 
-    private void plotWolves(int i, Graphics2D g) {
-        g.setColor(new Color(0xA34C55));
+    private void plotWolves(int i, Graphics2D g, double dx) {
+        g.setColor(new Color(0xEB6B7E));
         g.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         int x0 = (int)(i * dx);
         int y0 = getHeightInScale(timeStamps.get(i).getWolvesNumber(), wolfMaxNumber);
@@ -72,4 +116,7 @@ public class Plotter {
         return plotter;
     }
 
+    public static void main(String[] args) {
+        Plotter plotter = getInstance();
+    }
 }

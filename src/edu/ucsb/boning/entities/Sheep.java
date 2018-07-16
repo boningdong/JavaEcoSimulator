@@ -12,7 +12,7 @@ import java.util.Random;
 public class Sheep extends Animal {
 
     public static final int FILL_COLOR = 0x5AD2CC;
-    public static boolean debugRender = true;
+    public static boolean debugRender = false;
 
     int sightRrange = 40;
     private double speed = Parameters.INIT_SPEED_SHEEP;
@@ -130,11 +130,11 @@ public class Sheep extends Animal {
     @Override
     public void render(Graphics g) {
         if (state == State.NORMAL)
-            g.setColor(new Color(0x65D2BA));
+            g.setColor(new Color(0x5DB0D6));
         else if (state == State.DANGER)
-            g.setColor(new Color(0x46EEE0));
+            g.setColor(new Color(0x60C8D6));
         else if (state == State.MATE)
-            g.setColor(new Color(0x73D5F8));
+            g.setColor(new Color(0x7B94DD));
         g.fillRoundRect(position.getX()-SIZE/2, position.getY()-SIZE/2, SIZE, SIZE, SIZE/2, SIZE/2);
 
         if (debugRender) {
