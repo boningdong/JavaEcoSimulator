@@ -60,7 +60,8 @@ public class Wolf extends Animal {
                     normalWalkAround(dt);
             } else {
                 setDirection(huntTarget.getPosition());
-                position.translate(Parameters.BOOST_FACTOR_WOLF * speed * Math.cos(rad) * dt, Parameters.BOOST_FACTOR_WOLF * speed * Math.sin(rad) * dt);
+                double a = Math.exp((food - Parameters.MAX_VALUE) * Parameters.HUNGER_DECAY_EXP_FACTOR);
+                position.translate(a * Parameters.BOOST_FACTOR_WOLF * speed * Math.cos(rad) * dt, a * Parameters.BOOST_FACTOR_WOLF * speed * Math.sin(rad) * dt);
                 updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_WOLF * Parameters.FOOD_DROP_BOOST_FACTOR * dt, Parameters.SEX_INCREASE_RATE_WOLF * dt);
                 if (Point.getDistance(position, huntTarget.position) <= Parameters.COLLISION_RANGE) {
                     hunt();
@@ -89,7 +90,8 @@ public class Wolf extends Animal {
                     normalWalkAround(dt);
             } else {
                 setDirection(mateTarget.position);
-                position.translate(Parameters.BOOST_FACTOR_WOLF * speed * Math.cos(rad) * dt, Parameters.BOOST_FACTOR_WOLF * speed * Math.sin(rad) * dt);
+                double a = Math.exp((food - Parameters.MAX_VALUE) * Parameters.HUNGER_DECAY_EXP_FACTOR);
+                position.translate(a * Parameters.BOOST_FACTOR_WOLF * speed * Math.cos(rad) * dt, a * Parameters.BOOST_FACTOR_WOLF * speed * Math.sin(rad) * dt);
                 updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_WOLF * Parameters.FOOD_DROP_BOOST_FACTOR * dt, +Parameters.SEX_INCREASE_RATE_WOLF * dt);
                 if (Point.getDistance(position, mateTarget.position) <= Parameters.COLLISION_RANGE)
                     mate();
@@ -126,7 +128,8 @@ public class Wolf extends Animal {
             destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
         }
         setDirection();
-        position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
+        double a = Math.exp((food - Parameters.MAX_VALUE) * Parameters.HUNGER_DECAY_EXP_FACTOR);
+        position.translate(a * speed * Math.cos(rad) * dt, a * speed * Math.sin(rad) * dt);
         updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_WOLF * dt, Parameters.SEX_INCREASE_RATE_WOLF * dt);
     }
 

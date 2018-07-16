@@ -12,7 +12,7 @@ import java.util.Random;
 public class Sheep extends Animal {
 
     public static final int FILL_COLOR = 0x5AD2CC;
-    public static boolean debugRender = false;
+    public static boolean debugRender = true;
 
     int sightRrange = 40;
     private double speed = Parameters.INIT_SPEED_SHEEP;
@@ -62,7 +62,8 @@ public class Sheep extends Animal {
             else {
                 //if (mateTarget != null)
                 setDirection(mateTarget.position);
-                position.translate(speed * Parameters.BOOST_FACTOR_SHEEP * Math.cos(rad) * dt, speed * Parameters.BOOST_FACTOR_SHEEP * Math.sin(rad) * dt);
+                double a = Math.exp((food - Parameters.MAX_VALUE) * Parameters.HUNGER_DECAY_EXP_FACTOR);
+                position.translate(a * speed * Parameters.BOOST_FACTOR_SHEEP * Math.cos(rad) * dt, a * speed * Parameters.BOOST_FACTOR_SHEEP * Math.sin(rad) * dt);
                 updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_SHEEP * Parameters.FOOD_DROP_BOOST_FACTOR * dt, +Parameters.SEX_INCREASE_RATE_SHEEP * dt);
                 if (Point.getDistance(position, mateTarget.position) < Parameters.COLLISION_RANGE)
                     mate();
@@ -87,7 +88,8 @@ public class Sheep extends Animal {
             else {
                 setDirection(dangerSource.position);
                 rad += Math.PI;
-                position.translate(speed * Parameters.BOOST_FACTOR_SHEEP * Math.cos(rad) * dt, speed * Parameters.BOOST_FACTOR_SHEEP * Math.sin(rad) * dt);
+                double a = Math.exp((food - Parameters.MAX_VALUE) * Parameters.HUNGER_DECAY_EXP_FACTOR);
+                position.translate(a * speed * Parameters.BOOST_FACTOR_SHEEP * Math.cos(rad) * dt, a * speed * Parameters.BOOST_FACTOR_SHEEP * Math.sin(rad) * dt);
                 updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_SHEEP * Parameters.FOOD_DROP_BOOST_FACTOR * dt, +Parameters.SEX_INCREASE_RATE_SHEEP * dt);
             }
             // Change State
@@ -158,7 +160,8 @@ public class Sheep extends Animal {
             destination = Point.getRandomPoint(Game.WIDTH, Game.HEIGHT);
         }
         setDirection();
-        position.translate(speed * Math.cos(rad) * dt, speed * Math.sin(rad) * dt);
+        double a = Math.exp((food - Parameters.MAX_VALUE) * Parameters.HUNGER_DECAY_EXP_FACTOR);
+        position.translate(a * speed * Math.cos(rad) * dt, a * speed * Math.sin(rad) * dt);
         updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_SHEEP * dt, +Parameters.SEX_INCREASE_RATE_SHEEP * dt);
     }
 
