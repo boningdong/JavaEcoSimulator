@@ -91,9 +91,8 @@ public class Sheep extends Animal {
                 updateBasicProperties(+1 * dt, -Parameters.FOOD_DROP_RATE_SHEEP * Parameters.FOOD_DROP_BOOST_FACTOR * dt, +Parameters.SEX_INCREASE_RATE_SHEEP * dt);
             }
             // Change State
-            if (dangerSource != null && Point.getDistance(dangerSource.position, position) < sightRrange) {
-                // Do nothing
-            } else {
+            if (dangerSource != null && Point.getDistance(dangerSource.position, position) < sightRrange) { }
+            else {
                 dangerSource = alertDangerSource();
                 if (dangerSource == null && sex < Parameters.SEX_THRESHOLD)
                     setState(State.NORMAL);
