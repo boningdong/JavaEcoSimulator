@@ -15,8 +15,8 @@ public class Wolf extends Animal {
     public static final int FILL_COLOR = 0xD44B4C;
 
     private boolean debugRender = false;
-    private double speed = Parameters.INIT_SPEED_WOLF;
-    private int sightRrange = 50;
+    private double speed = Parameters.getRandomizedParameter(Parameters.INIT_SPEED_WOLF, 0.1);
+    private double sightRrange = Parameters.INIT_SIGHT_WOLF;
     private Sheep huntTarget = null;
     private Wolf mateTarget = null;
     private Wolf wolfBaby = null;
@@ -25,10 +25,18 @@ public class Wolf extends Animal {
         super();
     }
 
-    public Wolf(Wolf w1, Wolf w2) {
+    public Wolf(Wolf p1, Wolf p2) {
         super();
-        food = (w1.food + w2.food) / 2;
-        position = Point.getRandomPointNear(w1.position, Parameters.NEW_BORN_DELIVER_RANGE);
+        food = (p1.food + p2.food) / 2;
+        position = Point.getRandomPointNear(p1.position, Parameters.NEW_BORN_DELIVER_RANGE);
+        speed = Parameters.getRandomizedParameter((p1.speed + p2.speed)/2, Parameters.MUTATION_TOLERANCE_WOLF);
+        sightRrange = Parameters.getRandomizedParameter((p1.sightRrange + p2.sightRrange)/2, Parameters.MUTATION_TOLERANCE_WOLF);
+
+        double initSpeed = Parameters.INIT_SPEED_WOLF;
+        double initSight = Parameters.INIT_SIGHT_WOLF;
+        double limit = Parameters.MAX_MUTATION_FACTOR;
+        speed = Parameters.constrainParametersInRange(speed, initSpeed / limit, initSpeed * limit);
+        sightRrange = Parameters.constrainParametersInRange(sightRrange, initSight / limit, initSight * limit);
     }
 
     @Override
@@ -165,6 +173,14 @@ public class Wolf extends Animal {
         Wolf w = wolfBaby;
         wolfBaby = null;
         return w;
+    }
+
+    public double getSightRrange() {
+        return sightRrange;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 
     @Override

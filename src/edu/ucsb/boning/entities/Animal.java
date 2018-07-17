@@ -24,7 +24,6 @@ public abstract class Animal extends Entity {
     double sex = 0;
     boolean mature = false;
 
-    int speed = 30;
     double rad = 0;
 
 

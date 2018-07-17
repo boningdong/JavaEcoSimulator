@@ -14,8 +14,8 @@ public class Sheep extends Animal {
     public static final int FILL_COLOR = 0x5AD2CC;
     public static boolean debugRender = false;
 
-    int sightRrange = 40;
-    private double speed = Parameters.INIT_SPEED_SHEEP;
+    double sightRrange = Parameters.INIT_SIGHT_SHEEP;
+    private double speed = Parameters.getRandomizedParameter(Parameters.INIT_SPEED_SHEEP, 0.1);
     private Sheep mateTarget = null;
     private Wolf dangerSource = null;
     private Sheep sheepBaby = null;
@@ -28,6 +28,14 @@ public class Sheep extends Animal {
         super();
         food = (p1.food + p2.food) / 2;
         position = Point.getRandomPointNear(p1.position, Parameters.NEW_BORN_DELIVER_RANGE);
+        speed = Parameters.getRandomizedParameter((p1.speed + p2.speed)/2, Parameters.MUTATION_TOLERANCE_SHEEP);
+        sightRrange = Parameters.getRandomizedParameter((p1.sightRrange + p2.sightRrange)/2, Parameters.MUTATION_TOLERANCE_SHEEP);
+
+        double initSpeed = Parameters.INIT_SPEED_SHEEP;
+        double initSight = Parameters.INIT_SIGHT_SHEEP;
+        double limit = Parameters.MAX_MUTATION_FACTOR;
+        speed = Parameters.constrainParametersInRange(speed, initSpeed / limit, initSpeed * limit);
+        sightRrange = Parameters.constrainParametersInRange(sightRrange, initSight / limit, initSight * limit);
     }
 
     @Override
@@ -194,6 +202,14 @@ public class Sheep extends Animal {
         y = y >= Game.HEIGHT ? y - Game.HEIGHT : y;
         y = y < 0 ? y + Game.HEIGHT : y;
         position = new Point(x, y);
+    }
+
+    public double getSightRrange() {
+        return sightRrange;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 
     @Override
