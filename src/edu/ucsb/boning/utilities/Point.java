@@ -56,4 +56,10 @@ public class Point {
         double dy2 = Math.pow(p1.y - p2.y, 2);
         return Math.sqrt(dx2 + dy2);
     }
+
+    public static Point getRandomPointNear(Point p1, double r) {
+        double rad = new Random().nextFloat() * 2 * Math.PI;
+        double radius = (new Random().nextGaussian() + 1) * r;
+        return new Point(p1.x + radius * Math.cos(rad), p1.y + radius * Math.sin(rad));
+    }
 }
