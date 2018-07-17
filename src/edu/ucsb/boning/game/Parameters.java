@@ -1,8 +1,18 @@
 package edu.ucsb.boning.game;
 
+import java.util.Random;
+
 public class Parameters {
 
+    //Game
+    public static final int INIT_SHEEP_NUM = 200;
+    public static final int INIT_WOLF_NUM = 30;
+    public static final double COLLISION_RANGE = 8;
+
     public static final double MAX_VALUE = 100;
+    //Sight
+    public static final double INIT_SIGHT_SHEEP = 40;
+    public static final double INIT_SIGHT_WOLF = 50;
     //Speed
     public static final double INIT_SPEED_SHEEP = 35;
     public static final double INIT_SPEED_WOLF = 60;
@@ -31,12 +41,19 @@ public class Parameters {
     public static final double PREGNENT_PROBABILITY_SHEEP = 0.9;
     public static final double PREGNENT_PROBABILITY_WOLF = 0.75;
     public static final double NEW_BORN_DELIVER_RANGE = 60;
-    //Game
-    public static final double COLLISION_RANGE = 8;
+    //Mutation
+    public static final double MUTATION_TOLERANCE_WOLF = 0.2;
+    public static final double MUTATION_TOLERANCE_SHEEP = 0.2;
+    public static final double MAX_MUTATION_FACTOR = 1.3;
 
     public static double constrainParametersInRange(double value, double min, double max) {
         value = value > max ? max : value;
         value = value < min ? min : value;
         return value;
+    }
+
+    public static double getRandomizedParameter(double value, double tolerance) {
+        double t = (new Random().nextDouble() - 0.5) * 2 * tolerance;
+        return value * (1 + t);
     }
 }

@@ -4,6 +4,7 @@ import edu.ucsb.boning.entities.Animal;
 import edu.ucsb.boning.entities.Entity;
 import edu.ucsb.boning.entities.Sheep;
 import edu.ucsb.boning.entities.Wolf;
+import edu.ucsb.boning.utilities.Statistician;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ public class World {
     private ArrayList<Sheep> sheep = new ArrayList<>();
     private ArrayList<Wolf> wolves = new ArrayList<>();
 
+    private Statistician statistic = new Statistician();
+
     private World() {
-        for(int i = 0; i < 200; i++) {
+        for(int i = 0; i < Parameters.INIT_SHEEP_NUM; i++) {
             sheep.add(new Sheep());
         }
-        for (int i = 0; i < 30; i++){
+        for (int i = 0; i < Parameters.INIT_WOLF_NUM; i++){
             wolves.add(new Wolf());
         }
     }
@@ -55,6 +58,11 @@ public class World {
             removeEntity(e);
         sheep.addAll(newSheepList);
         wolves.addAll(newWolfList);
+
+        if (debugRender) {
+            statistic.reset();
+            statistic.update(sheep, wolves);
+        }
     }
 
     public void render(Graphics g) {
@@ -64,9 +72,10 @@ public class World {
             w.render(g);
 
         if (debugRender) {
-            g.setColor(new Color(0xD4007D));
-            g.drawString("Sheep# " + sheep.size(), 10, 20);
-            g.drawString("Wolves# " + wolves.size(), 10, 40);
+            g.setColor(new Color(0xF8889F));
+            g.setFont(new Font("Arial", Font.BOLD, 10));
+            g.drawString(String.format("Sheep# %d, AvgSpeed: %.2f AvgRange: %.2f", statistic.getSheepNum(), statistic.getAvgSheepSpeed(), statistic.getAvgSheepSight()), 10, 20);
+            g.drawString(String.format("Wolf# %d, AvgSpeed: %.2f AvgRange: %.2f", statistic.getWolfNum(), statistic.getAvgWolfSpeed(), statistic.getAvgWolfSight()), 10, 40);
         }
     }
 
