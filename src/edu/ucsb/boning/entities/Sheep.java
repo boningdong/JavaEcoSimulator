@@ -12,7 +12,7 @@ import java.util.Random;
 public class Sheep extends Animal {
 
     public static final int FILL_COLOR = 0x5AD2CC;
-    public static boolean debugRender = true;
+    public static boolean debugRender = false;
 
     int sightRrange = 40;
     private double speed = Parameters.INIT_SPEED_SHEEP;
@@ -27,6 +27,7 @@ public class Sheep extends Animal {
     public Sheep(Sheep p1, Sheep p2) {
         super();
         food = (p1.food + p2.food) / 2;
+        position = Point.getRandomPointNear(p1.position, Parameters.NEW_BORN_DELIVER_RANGE);
     }
 
     @Override
@@ -194,7 +195,6 @@ public class Sheep extends Animal {
         y = y < 0 ? y + Game.HEIGHT : y;
         position = new Point(x, y);
     }
-
 
     @Override
     protected void setNormalState() {

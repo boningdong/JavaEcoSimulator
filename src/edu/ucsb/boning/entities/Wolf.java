@@ -28,6 +28,7 @@ public class Wolf extends Animal {
     public Wolf(Wolf w1, Wolf w2) {
         super();
         food = (w1.food + w2.food) / 2;
+        position = Point.getRandomPointNear(w1.position, Parameters.NEW_BORN_DELIVER_RANGE);
     }
 
     @Override
@@ -143,10 +144,12 @@ public class Wolf extends Animal {
     private void mate() {
         this.sex = 0;
         mateTarget.sex = 0;
-        if ((new Random().nextFloat() < Parameters.PREGNENT_PROBABILITY_WOLF) && wolfBaby == null) {
+        double a = Math.exp((food + mateTarget.food - 2 * Parameters.MAX_VALUE)/2 * Parameters.PREGNENT_EXP_DECAY_FACTOR_WOLF);
+        if ((new Random().nextFloat() < Parameters.PREGNENT_PROBABILITY_WOLF * a) && wolfBaby == null) {
             if (!mateTarget.isPregnent())
                 mateTarget.pregnent(new Wolf(this, mateTarget));
         }
+        food -= Parameters.FOOD_DROP_SEX_WOLF;
         mateTarget = null;
     }
 
