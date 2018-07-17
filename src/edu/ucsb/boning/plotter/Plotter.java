@@ -15,7 +15,7 @@ public class Plotter implements Runnable{
     // Plotter appearance style setting
     public final static int xLabelNum = 15;
     public final static double vPadding = 0.1;
-    public final static double scaleFactor = 1.4;
+    public final static double scaleFactor = 1.1;
     public final Font labelFont = new Font("Arial", Font.BOLD, 10);
     public static Plotter plotter;
 
@@ -54,7 +54,9 @@ public class Plotter implements Runnable{
     @Override
     public void run() {
         while(true) {
-            render();
+            try {
+                render();
+            } catch (Exception e) {}
         }
     }
 

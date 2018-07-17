@@ -16,7 +16,7 @@ public class Game implements Runnable{
     // Game Parameters
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
-    public static final double FPS = 60.0;
+    public static final double FPS = 30.0;
 
     private Gui gui = new Gui();
 
