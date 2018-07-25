@@ -13,6 +13,7 @@
   - Mate behavior will loss food value.
   - The new born baby will inherit its parents property (speed and sight range), and it will vary because of the mutation.
   - When wolf is hungry, it will find a sheep target, and hunt the target.
+  - During chasing a mate target and a hunt target, animals will run faster, but faster speed leads a faster food drop.
   - The food gain rate for sheep is based on how many sheep nearby. If there are too many sheep, the area cannot support all the sheep to survive.
   - A Statistician class is used for recording the data of the game.
   - A Plotter will plot the change of entities' number with time went by.
