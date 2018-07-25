@@ -19,5 +19,8 @@
   - A Plotter will plot the change of entities' number with time went by.
   - All the parameters and features are adjusted and designed to make sure the ecosystem can be balanced.
 
+## Screenshots
+![Alt Text](https://github.com/boningdong/JavaEcoSimulator/blob/master/GameImg.gif)
+![Alt Text](https://github.com/boningdong/JavaEcoSimulator/blob/master/PlotterImg.gif)
 
 
